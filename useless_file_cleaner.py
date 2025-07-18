@@ -60,6 +60,16 @@ class UselessFileCleaner:
         top_frame.pack(side=tk.TOP, fill=tk.X)
         tk.Label(top_frame, text=self.languages[self.current_lang]["app_name"], font=("Arial", 16, "bold"), anchor="w").pack(side=tk.LEFT, padx=10, pady=5)
         tk.Label(top_frame, text="🧹", font=("Arial", 16)).pack(side=tk.LEFT, padx=5)
+        author_frame = tk.Frame(self.root)
+        author_frame.pack(side=tk.TOP, fill=tk.X)
+        author_label = tk.Label(author_frame, text="Tehnyt Julle98 | Made by Julle98", fg="blue", cursor="hand2", font=("Arial", 10, "italic"))
+        author_label.pack(side=tk.LEFT, padx=10)
+        author_label.bind("<Button-1>", lambda e: self.open_github())
+        instructions = {
+            "fi": "Käyttöohje: Valitse kansio, listaa tiedostot, valitse tiedostot ja poista/siirrä. Voit luoda uuden kansion tärkeille tiedostoille.",
+            "en": "Instructions: Select a folder, list files, select files and delete/move. You can create a new folder for important files."
+        }
+        tk.Label(self.root, text=instructions[self.current_lang], font=("Arial", 10)).pack(pady=(0,10))
         tk.Label(self.root, text=self.languages[self.current_lang]["select_folder"]).pack()
         tk.Entry(self.root, textvariable=self.folder_path, width=50).pack(side=tk.LEFT)
         tk.Button(self.root, text=self.languages[self.current_lang]["browse"], command=self.browse_folder).pack(side=tk.LEFT)
@@ -76,6 +86,10 @@ class UselessFileCleaner:
         self.current_lang = lang
         self.refresh_ui()
     
+    def open_github(self):
+        import webbrowser
+        webbrowser.open_new("https://github.com/Julle98")
+
     def refresh_ui(self):
         for widget in self.root.winfo_children():
             widget.destroy()
