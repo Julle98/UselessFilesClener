@@ -51,6 +51,7 @@
   ('fractions', '/usr/lib/python3.11/fractions.py', 'PYMODULE'),
   ('getopt', '/usr/lib/python3.11/getopt.py', 'PYMODULE'),
   ('gettext', '/usr/lib/python3.11/gettext.py', 'PYMODULE'),
+  ('glob', '/usr/lib/python3.11/glob.py', 'PYMODULE'),
   ('gzip', '/usr/lib/python3.11/gzip.py', 'PYMODULE'),
   ('hashlib', '/usr/lib/python3.11/hashlib.py', 'PYMODULE'),
   ('importlib', '/usr/lib/python3.11/importlib/__init__.py', 'PYMODULE'),
@@ -122,6 +123,7 @@
   ('quopri', '/usr/lib/python3.11/quopri.py', 'PYMODULE'),
   ('random', '/usr/lib/python3.11/random.py', 'PYMODULE'),
   ('selectors', '/usr/lib/python3.11/selectors.py', 'PYMODULE'),
+  ('shlex', '/usr/lib/python3.11/shlex.py', 'PYMODULE'),
   ('shutil', '/usr/lib/python3.11/shutil.py', 'PYMODULE'),
   ('signal', '/usr/lib/python3.11/signal.py', 'PYMODULE'),
   ('socket', '/usr/lib/python3.11/socket.py', 'PYMODULE'),
@@ -154,4 +156,5 @@
   ('typing', '/usr/lib/python3.11/typing.py', 'PYMODULE'),
   ('urllib', '/usr/lib/python3.11/urllib/__init__.py', 'PYMODULE'),
   ('urllib.parse', '/usr/lib/python3.11/urllib/parse.py', 'PYMODULE'),
+  ('webbrowser', '/usr/lib/python3.11/webbrowser.py', 'PYMODULE'),
   ('zipfile', '/usr/lib/python3.11/zipfile.py', 'PYMODULE')])
