@@ -2,7 +2,7 @@
 
 ## Launch with Python on Linux and MacOS
 ```bash
-python3 [useless_file_cleaner.py](http://_vscodecontentref_/1)
+./useless_file_cleaner
 
 ## Launch with Python on Windows
 ````powershell
