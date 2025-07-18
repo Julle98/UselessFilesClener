@@ -8,6 +8,7 @@ class UselessFileCleaner:
         self.root = root
         self.root.bind("<Configure>", self.on_resize)
         self.resize_after_id = None
+        self.last_width = self.root.winfo_width() if hasattr(self.root, 'winfo_width') else 800
         self.languages = {
             "fi": {
                 "app_name": "Useless File Cleaner",
@@ -66,16 +67,16 @@ class UselessFileCleaner:
         top_frame = tk.Frame(self.root)
         top_frame.pack(side=tk.TOP, fill=tk.X)
 
-        self.label_appname = tk.Label(top_frame, text=self.languages[self.current_lang]["app_name"], font=("Arial", 16, "bold"), anchor="w")
+        self.label_appname = tk.Label(top_frame, text=self.languages[self.current_lang]["app_name"], anchor="w")
         self.label_appname.pack(side=tk.LEFT, padx=10, pady=5)
-        self.label_icon = tk.Label(top_frame, text="🧹", font=("Arial", 16))
+        self.label_icon = tk.Label(top_frame, text="🧹")
         self.label_icon.pack(side=tk.LEFT, padx=5)
 
         author_text = {
             "fi": "Tehnyt Julle98",
             "en": "Made by Julle98"
         }
-        self.author_label = tk.Label(top_frame, text=author_text[self.current_lang], fg="blue", cursor="hand2", font=("Arial", 10, "italic"))
+        self.author_label = tk.Label(top_frame, text=author_text[self.current_lang], fg="blue", cursor="hand2")
         self.author_label.pack(side=tk.LEFT, padx=10)
         self.author_label.bind("<Button-1>", lambda e: self.open_github())
 
@@ -83,58 +84,73 @@ class UselessFileCleaner:
             "fi": "Käyttöohje: Valitse kansio, listaa tiedostot, valitse tiedostot ja poista/siirrä. Voit luoda uuden kansion tärkeille tiedostoille.",
             "en": "Instructions: Select a folder, list files, select files and delete/move. You can create a new folder for important files."
         }
-        self.label_instructions = tk.Label(top_frame, text=instructions[self.current_lang], font=("Arial", 9), anchor="w", fg="gray")
+        self.label_instructions = tk.Label(top_frame, text=instructions[self.current_lang], anchor="w", fg="gray")
         self.label_instructions.pack(side=tk.TOP, anchor="w", fill=tk.X, padx=10, pady=(0,5))
 
-        self.label_select_folder = tk.Label(self.root, text=self.languages[self.current_lang]["select_folder"])
-        self.label_select_folder.pack()
-        self.entry_folder = tk.Entry(self.root, textvariable=self.folder_path, width=50)
-        self.entry_folder.pack(side=tk.LEFT)
-        self.button_browse = tk.Button(self.root, text=self.languages[self.current_lang]["browse"], command=self.browse_folder)
-        self.button_browse.pack(side=tk.LEFT)
-        self.button_list_files = tk.Button(self.root, text=self.languages[self.current_lang]["list_files"], command=self.list_files)
-        self.button_list_files.pack(side=tk.LEFT)
-        self.listbox = Listbox(self.root, selectmode=tk.MULTIPLE, width=80)
-        self.listbox.pack()
-        self.button_delete = tk.Button(self.root, text=self.languages[self.current_lang]["delete_selected"], command=self.delete_selected)
-        self.button_delete.pack()
-        self.button_move = tk.Button(self.root, text=self.languages[self.current_lang]["move_selected"], command=self.move_selected)
-        self.button_move.pack()
+        # Folder selection row
+        folder_frame = tk.Frame(self.root)
+        folder_frame.pack(fill=tk.X, padx=10, pady=5)
+        self.label_select_folder = tk.Label(folder_frame, text=self.languages[self.current_lang]["select_folder"])
+        self.label_select_folder.pack(side=tk.LEFT)
+        self.entry_folder = tk.Entry(folder_frame, textvariable=self.folder_path)
+        self.entry_folder.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.button_browse = tk.Button(folder_frame, text=self.languages[self.current_lang]["browse"], command=self.browse_folder)
+        self.button_browse.pack(side=tk.LEFT, padx=5)
+        self.button_list_files = tk.Button(folder_frame, text=self.languages[self.current_lang]["list_files"], command=self.list_files)
+        self.button_list_files.pack(side=tk.LEFT, padx=5)
+
+        # Listbox for files
+        listbox_frame = tk.Frame(self.root)
+        listbox_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        self.listbox = Listbox(listbox_frame, selectmode=tk.MULTIPLE)
+        self.listbox.pack(fill=tk.BOTH, expand=True)
+
+        # Action buttons row
+        action_frame = tk.Frame(self.root)
+        action_frame.pack(fill=tk.X, padx=10, pady=5)
+        self.button_delete = tk.Button(action_frame, text=self.languages[self.current_lang]["delete_selected"], command=self.delete_selected)
+        self.button_delete.pack(side=tk.LEFT, padx=5)
+        self.button_move = tk.Button(action_frame, text=self.languages[self.current_lang]["move_selected"], command=self.move_selected)
+        self.button_move.pack(side=tk.LEFT, padx=5)
+
+        # Target folder entry and new folder button
+        target_frame = tk.Frame(self.root)
+        target_frame.pack(fill=tk.X, padx=10, pady=5)
         self.target_folder = tk.StringVar()
-        self.entry_target_folder = tk.Entry(self.root, textvariable=self.target_folder, width=50)
-        self.entry_target_folder.pack()
-        self.button_new_folder = tk.Button(self.root, text=self.languages[self.current_lang]["new_folder"], command=self.create_folder)
-        self.button_new_folder.pack()
+        self.entry_target_folder = tk.Entry(target_frame, textvariable=self.target_folder)
+        self.entry_target_folder.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.button_new_folder = tk.Button(target_frame, text=self.languages[self.current_lang]["new_folder"], command=self.create_folder)
+        self.button_new_folder.pack(side=tk.LEFT, padx=5)
 
         self.widgets = [
             self.label_appname, self.label_icon, self.author_label, self.label_instructions,
             self.label_select_folder, self.entry_folder, self.button_browse, self.button_list_files,
-            self.listbox, 
-        ]        
+            self.listbox, self.button_delete, self.button_move, self.entry_target_folder, self.button_new_folder
+        ]
     
     def open_github(self):
         import webbrowser
         webbrowser.open_new("https://github.com/Julle98")
 
     def on_resize(self, event):
+        # Päivitä fonttikoko vain, jos leveys muuttuu merkittävästi (esim. 50px)
+        new_width = event.width
+        if abs(new_width - getattr(self, 'last_width', 0)) < 50:
+            return
+        self.last_width = new_width
         if self.resize_after_id:
             self.root.after_cancel(self.resize_after_id)
-        self.resize_after_id = self.root.after(150, lambda: self.update_fonts(max(10, int(event.width / 50))))
+        self.resize_after_id = self.root.after(150, lambda: self.update_fonts(max(10, min(20, int(new_width / 50)))))
 
     def update_fonts(self, size):
         font_main = ("Arial", size, "bold")
         font_normal = ("Arial", size)
         for widget in self.widgets:
-            widget.config(font=font_main if isinstance(widget, tk.Label) else font_normal)
-        window_width = self.root.winfo_width()
-        listbox_width = max(30, min(120, int(window_width / 10)))
-        entry_width = max(20, min(60, int(window_width / 20)))  # Entry max puolet listboxin leveydestä
-        if hasattr(self, "listbox"):
-            self.listbox.config(width=listbox_width)
-        if hasattr(self, "entry_folder"):
-            self.entry_folder.config(width=entry_width)
-        if hasattr(self, "entry_target_folder"):
-            self.entry_target_folder.config(width=entry_width)
+            if isinstance(widget, tk.Label):
+                widget.config(font=font_main)
+            else:
+                widget.config(font=font_normal)
+        # Ei tarvita width-säätöä, koska fill=X ja expand=True hoitavat venymisen
 
     def refresh_ui(self):
         for widget in self.root.winfo_children():
