@@ -1,4 +1,4 @@
-# 🧹Junk File Cleaner
+# 🧹Junk File Cleaner (Almost useless)
 Very basic app that check your folders and remove/safe your selected files. App is language supported on English and Finnish. 
 
 ## Launch with Python on Windows:
