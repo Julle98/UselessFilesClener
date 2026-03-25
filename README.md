@@ -9,7 +9,7 @@ Very basic app that check your folders and remove/safe your selected files. App 
 
 ## License 
 
-See the MIT [LICENSE](__LICENSE__) file.
+See the MIT [LICENSE](__LICENSE__) in the file.
 
 ---
 
